@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { sortedAlerts, isPlaceholder, type AlertItem } from "../data/site";
+import { Link } from "react-router-dom";
+import { sortedAlerts, isPlaceholder, resolveActionHref, type AlertItem } from "../data/site";
 import DoodleWindow from "../components/DoodleWindow";
 import Countdown from "../components/Countdown";
 
@@ -99,7 +100,8 @@ export default function News() {
                       )}
                     </div>
                   )}
-                  <div className="mt-3 flex gap-2">
+                  <div className="mt-3 flex gap-2 flex-wrap">
+                    {a.actions && a.actions.map((act) => <ActionLink key={act.href} action={act} />)}
                     <button
                       type="button"
                       onClick={() => dismiss(a.id)}
@@ -116,6 +118,19 @@ export default function News() {
       </div>
     </div>
   );
+}
+
+type Action = { label: string; kind: "internal" | "external" | "route"; href: string };
+
+function ActionLink({ action }: { action: Action }) {
+  const href = resolveActionHref(action.href);
+  if (action.kind === "route") {
+    return <Link to={href} className="btn-doodle btn-mint press">{action.label}</Link>;
+  }
+  if (action.kind === "internal") {
+    return <a href={href} className="btn-doodle btn-gold press">{action.label}</a>;
+  }
+  return <a href={href} target="_blank" rel="noreferrer" className="btn-doodle btn-coral press">{action.label} →</a>;
 }
 
 function AlertMessage({ text }: { text: string }) {

@@ -27,23 +27,18 @@ export default function OfficerFlipCard({ officer }: Props) {
   };
 
   return (
-    <div
-      className="w-full"
-      style={{ perspective: "1200px" }}
-    >
+    <div className="w-full" style={{ perspective: "1200px" }}>
       <button
         type="button"
         onClick={toggle}
         onKeyDown={onKey}
         aria-pressed={flipped}
-        aria-label={`${officer.name}, ${officer.role}. Tap to see a fun fact.`}
+        aria-label={`${officer.name}, ${officer.role}. Tap to see what they do.`}
         className="relative w-full text-left press"
         style={{ transformStyle: "preserve-3d" }}
       >
         <div
-          className={clsx(
-            "relative transition-transform duration-500",
-          )}
+          className={clsx("relative transition-transform duration-500")}
           style={{
             transformStyle: "preserve-3d",
             transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
@@ -64,6 +59,7 @@ export default function OfficerFlipCard({ officer }: Props) {
                   <img
                     src={officer.photo}
                     alt={`${officer.name}, ${officer.role}`}
+                    loading="lazy"
                     className="w-full max-w-[220px] aspect-[3/4] object-cover rounded-xl border-[2.5px] border-ink doodle-shadow-sm"
                   />
                 )}
@@ -71,7 +67,7 @@ export default function OfficerFlipCard({ officer }: Props) {
                   <div className="font-hand text-2xl text-ink leading-tight">{officer.name}</div>
                   <div className="font-body text-sm text-ink/70">{officer.role}</div>
                 </div>
-                <div className="mt-2 font-hand text-xs text-ink/60">Tap for a fun fact</div>
+                <div className="mt-2 font-hand text-xs text-ink/60">Tap to see what they do</div>
               </div>
             </DoodleWindow>
           </div>
@@ -80,20 +76,22 @@ export default function OfficerFlipCard({ officer }: Props) {
             className="absolute inset-0"
             style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
           >
-            <DoodleWindow variant={variant} addressText="funfact.txt">
-              <div className="min-h-[260px] flex flex-col items-center justify-center text-center">
-                <div className="font-hand text-xl text-ink mb-2">{officer.name}</div>
-                {isPlaceholder(officer.funFact) ? (
-                  <PlaceholderBox
-                    label={officer.funFact}
-                    what="one fun fact, one sentence"
-                    aspect="auto"
-                    className="min-h-[120px]"
-                  />
-                ) : (
-                  <p className="font-body text-ink text-base leading-snug">{officer.funFact}</p>
-                )}
-                <div className="mt-4 font-hand text-xs text-ink/60">Tap to flip back</div>
+            <DoodleWindow variant={variant} addressText="role.txt">
+              <div className="min-h-[320px] flex flex-col text-left">
+                <div className="font-display text-2xl text-ink leading-tight">{officer.name}</div>
+                <div className="font-hand text-ink/70 text-base">{officer.role}</div>
+                <div className="mt-2 font-body text-ink text-sm leading-snug">{officer.duties}</div>
+                <div className="mt-3">
+                  <div className="font-hand text-ink/70 text-xs uppercase tracking-wide">Fun fact</div>
+                  {isPlaceholder(officer.funFact) ? (
+                    <div className="mt-1">
+                      <PlaceholderBox label={officer.funFact} what="one fun fact, one sentence" aspect="auto" size="sm" />
+                    </div>
+                  ) : (
+                    <p className="font-body text-ink text-sm mt-1">{officer.funFact}</p>
+                  )}
+                </div>
+                <div className="mt-auto font-hand text-xs text-ink/60 pt-2">Tap to flip back</div>
               </div>
             </DoodleWindow>
           </div>
