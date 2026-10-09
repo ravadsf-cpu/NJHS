@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { isPlaceholder, parseDate } from "../data/site";
+import { parseDate } from "../data/site";
 
 type Props = {
   date: string | undefined | null;
@@ -26,7 +26,7 @@ export default function Countdown({ date, label, compact }: Props) {
     return () => clearInterval(id);
   }, []);
 
-  if (!date || isPlaceholder(date)) {
+  if (!date) {
     return (
       <div className="font-hand text-ink/70 text-base">
         {label && <span className="mr-1">{label}:</span>}

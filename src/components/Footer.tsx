@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { site, isPlaceholder } from "../data/site";
+import { site } from "../data/site";
 
 const links = [
   { to: "/", label: "Home" },
@@ -9,6 +9,7 @@ const links = [
   { to: "/community-service", label: "Community service" },
   { to: "/photo-gallery", label: "Photo gallery" },
   { to: "/officer-info", label: "Officer info" },
+  { to: "/earn-more", label: "Earn more hours" },
   { to: "/news", label: "News & alerts" },
 ];
 
@@ -19,31 +20,14 @@ export default function Footer() {
         <div>
           <div className="font-hand text-ink text-lg">{site.footer.tagline}</div>
           <div className="mt-2 font-body text-ink/80 text-sm">
-            Questions? Ask an officer at a meeting, or email a sponsor:
+            Questions? Ask any officer at a meeting, or{" "}
+            <Link to="/officer-info#contact" className="underline decoration-dotted underline-offset-2">
+              email one of us
+            </Link>
+            .
           </div>
-          <ul className="mt-1 font-body text-ink/80 text-sm space-y-0.5">
-            {site.sponsors.map((s) => (
-              <li key={s.name}>
-                <span className="font-hand">{s.name}</span>
-                {isPlaceholder(s.email) ? (
-                  <>
-                    {" "}·{" "}
-                    <span className="inline-flex items-center gap-1 bg-paper border-[2px] border-dashed border-ink/60 rounded-md px-1.5 py-0.5 font-hand text-xs text-ink/80">
-                      <span aria-hidden>✎</span>
-                      <span>{s.email}</span>
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    {" "}·{" "}
-                    <a className="underline decoration-dotted underline-offset-2" href={`mailto:${s.email}`}>{s.email}</a>
-                  </>
-                )}
-              </li>
-            ))}
-          </ul>
-          <div className="font-body text-ink/60 text-xs mt-2">
-            We don't post student emails here. Those have student ID numbers in them.
+          <div className="mt-2 font-body text-ink/80 text-sm">
+            Sponsors: {site.sponsors.map((s) => s.name).join(", ")}.
           </div>
         </div>
         <nav className="md:text-right">

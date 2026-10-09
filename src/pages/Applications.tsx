@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { site, isPlaceholder, parseDate } from "../data/site";
+import { site, parseDate } from "../data/site";
 import DoodleWindow from "../components/DoodleWindow";
 import EligibilityChecker from "../components/EligibilityChecker";
 
@@ -9,6 +9,12 @@ function fallDeadlinePassed(now = new Date()): boolean {
   const end = new Date(d);
   end.setHours(23, 59, 59, 999);
   return end.getTime() < now.getTime();
+}
+
+function fallDeadlineDisplay(): string {
+  const d = parseDate(site.applications.fall2026Deadline);
+  if (!d) return site.applications.fall2026Deadline;
+  return d.toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" });
 }
 
 export default function Applications() {
@@ -37,20 +43,11 @@ export default function Applications() {
           <div className="mt-3">
             {closed ? (
               <div className="bg-coral ink-line rounded-xl p-3 font-hand text-ink">
-                Closed. Fall 2026 applications are closed. 7th graders: spring applications open{" "}
-                {isPlaceholder(site.applications.spring2027OpenDate) ? (
-                  <span className="inline-flex items-center gap-1 align-middle bg-paper border-[2px] border-dashed border-ink/60 rounded-md px-1.5 py-0.5 font-hand text-xs text-ink/80">
-                    <span aria-hidden>✎</span>
-                    <span>{site.applications.spring2027OpenDate}</span>
-                  </span>
-                ) : (
-                  <span>{site.applications.spring2027OpenDate}</span>
-                )}
-                .
+                Closed. Fall 2026 applications are closed. 7th graders: spring applications open {site.applications.spring2027OpenDisplay}.
               </div>
             ) : (
               <div className="bg-mint ink-line rounded-xl p-3 font-hand text-ink">
-                Fall 2026: applications are due {site.applications.fall2026Deadline} at {site.applications.fall2026DeadlineTime} in {site.applications.dropoffLocation}.
+                Fall 2026: applications are due {fallDeadlineDisplay()} at {site.applications.fall2026DeadlineTime} in {site.applications.dropoffLocation}.
               </div>
             )}
           </div>

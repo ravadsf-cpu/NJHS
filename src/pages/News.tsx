@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { sortedAlerts, isPlaceholder, resolveActionHref, type AlertItem } from "../data/site";
+import { sortedAlerts, resolveActionHref, type AlertItem } from "../data/site";
 import DoodleWindow from "../components/DoodleWindow";
 import Countdown from "../components/Countdown";
+import ShirtVote from "../components/ShirtVote";
 
 const KEY = "njhs.alerts-dismissed.v1";
 
@@ -63,6 +64,23 @@ export default function News() {
         )}
       </div>
 
+      <section id="shirts" className="mt-6">
+        <DoodleWindow variant="cream" addressText="pinned/shirt-vote">
+          <div className="flex items-start gap-2 flex-wrap">
+            <span className="font-hand text-xs uppercase tracking-wider bg-paper ink-line rounded-md px-2 py-0.5">
+              Pinned
+            </span>
+            <h2 className="font-display text-2xl text-ink">Vote on shirt colors!</h2>
+          </div>
+          <p className="font-body text-ink/80 mt-1">
+            Tap your favorite. We settle it at the meeting.
+          </p>
+          <div className="mt-3">
+            <ShirtVote />
+          </div>
+        </DoodleWindow>
+      </section>
+
       <div className="mt-6 space-y-5">
         {list.length === 0 && (
           <DoodleWindow variant="cream">
@@ -90,14 +108,10 @@ export default function News() {
                     </span>
                   </div>
                   <h2 className="font-display text-2xl text-ink mt-2 leading-tight">{a.title}</h2>
-                  <AlertMessage text={a.message} />
+                  <p className="font-body text-ink mt-1 leading-snug">{a.message}</p>
                   {a.dueDate && (
                     <div className="mt-2">
-                      {isPlaceholder(a.dueDate) ? (
-                        <InlinePlaceholder label={a.dueDate} />
-                      ) : (
-                        <Countdown date={a.dueDate} label="Due in" />
-                      )}
+                      <Countdown date={a.dueDate} label="Due in" />
                     </div>
                   )}
                   <div className="mt-3 flex gap-2 flex-wrap">
@@ -131,27 +145,4 @@ function ActionLink({ action }: { action: Action }) {
     return <a href={href} className="btn-doodle btn-gold press">{action.label}</a>;
   }
   return <a href={href} target="_blank" rel="noreferrer" className="btn-doodle btn-coral press">{action.label} →</a>;
-}
-
-function AlertMessage({ text }: { text: string }) {
-  const parts = text.split(/(\[\[[^\]]+\]\])/g);
-  return (
-    <p className="font-body text-ink mt-1 leading-snug">
-      {parts.map((p, i) =>
-        /^\[\[.+\]\]$/.test(p) ? <InlinePlaceholder key={i} label={p} /> : <span key={i}>{p}</span>
-      )}
-    </p>
-  );
-}
-
-function InlinePlaceholder({ label }: { label: string }) {
-  return (
-    <span
-      className="inline-flex items-center gap-1 align-middle mx-0.5 bg-paper border-[2px] border-dashed border-ink/60 rounded-md px-1.5 py-0.5 font-hand text-sm text-ink/80"
-      title="Placeholder: fill in with real content"
-    >
-      <span aria-hidden>✎</span>
-      <span>{label}</span>
-    </span>
-  );
 }

@@ -4,7 +4,6 @@ export type Album = {
   blurb?: string;
   color: "cream" | "gold" | "coral" | "mint";
   photos: { src: string; alt: string }[];
-  placeholders?: string[]; // "[[NEW_PHOTOS]]" style slots when there's nothing yet
 };
 
 export const albums: Album[] = [
@@ -18,14 +17,6 @@ export const albums: Album[] = [
       { src: "/photos/gallery/2026-first-meeting/img-9386.jpg", alt: "Members gathered in the library for the first chapter meeting" },
       { src: "/photos/gallery/2026-first-meeting/img-9387.jpg", alt: "Officers presenting at the first chapter meeting" },
     ],
-  },
-  {
-    slug: "2026-27",
-    title: "2026 to 2027",
-    blurb: "Photos we take this year will land here.",
-    color: "mint",
-    photos: [],
-    placeholders: ["[[NEW_PHOTOS_2026_27]]"],
   },
   {
     slug: "staff-goodie-bags",

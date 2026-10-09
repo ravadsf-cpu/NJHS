@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { site, isPlaceholder } from "../data/site";
+import { site } from "../data/site";
 
 export default function ServiceHoursBar() {
   const goal = site.serviceHours.goal;
-  const placeholder = site.serviceHours.currentPlaceholder;
-  const hasPlaceholder = isPlaceholder(placeholder);
   const current = site.serviceHours.current;
   const pct = Math.max(0, Math.min(100, Math.round((current / goal) * 100)));
   const [animatedPct, setAnimatedPct] = useState(0);
@@ -57,14 +55,8 @@ export default function ServiceHoursBar() {
           Chapter service hours
         </div>
         <div className="font-hand text-ink/80 text-base sm:text-lg">
-          {hasPlaceholder ? (
-            <span className="px-2 border-[2px] border-dashed border-ink/50 rounded-md bg-white/60 text-ink/70">
-              {placeholder}
-            </span>
-          ) : (
-            <span>{current.toLocaleString()}</span>
-          )}
-          <span className="text-ink/60"> / {goal.toLocaleString()}</span>
+          <span>{current.toLocaleString()}</span>
+          <span className="text-ink/60"> of {goal.toLocaleString()}</span>
         </div>
       </div>
       <div

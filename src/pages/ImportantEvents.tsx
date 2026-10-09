@@ -1,12 +1,13 @@
-import { site, isPlaceholder, isPastEvent, parseDate, type SiteEvent } from "../data/site";
+import { site, parseDate, isPastEvent, type SiteEvent } from "../data/site";
 import DoodleWindow from "../components/DoodleWindow";
-import PlaceholderBox from "../components/PlaceholderBox";
 import Countdown from "../components/Countdown";
 import EventSchedule from "../components/EventSchedule";
+import SmartImage from "../components/SmartImage";
+import EventPhotoFallback from "../components/EventPhotoFallback";
 
 function formatDate(dateStr: string): string {
   const d = parseDate(dateStr);
-  if (!d) return "Date not set";
+  if (!d) return "";
   return d.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" });
 }
 
@@ -15,12 +16,8 @@ function EventCard({ e }: { e: SiteEvent }) {
   return (
     <DoodleWindow variant="coral" addressText={e.id}>
       <div className="grid gap-4 sm:grid-cols-[180px_1fr]">
-        <div>
-          {isPlaceholder(e.photo) || !e.photo ? (
-            <PlaceholderBox label={isPlaceholder(e.photo) ? e.photo : "[[EVENT_PHOTO]]"} what="event photo, 4:3" aspect="4/3" />
-          ) : (
-            <img src={e.photo} alt={e.title} loading="lazy" className="w-full aspect-[4/3] object-cover rounded-xl border-[2.5px] border-ink doodle-shadow-sm" />
-          )}
+        <div className="aspect-[4/3] rounded-xl border-[2.5px] border-ink doodle-shadow-sm overflow-hidden bg-paper">
+          <SmartImage src={e.photo} alt={e.title} fallback={<EventPhotoFallback title={e.title} />} />
         </div>
         <div>
           <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight">{e.title}</h3>
@@ -35,19 +32,8 @@ function EventCard({ e }: { e: SiteEvent }) {
             </ul>
           )}
           {e.about && <p className="font-body text-ink mt-3">{e.about}</p>}
-          {e.signupLink && (
-            isPlaceholder(e.signupLink) ? (
-              <div className="mt-3">
-                <span className="inline-flex items-center gap-1 bg-paper border-[2px] border-dashed border-ink/60 rounded-md px-1.5 py-0.5 font-hand text-sm text-ink/80">
-                  <span aria-hidden>✎</span>
-                  <span>{e.signupLink}</span>
-                </span>
-              </div>
-            ) : (
-              <a href={e.signupLink} target="_blank" rel="noreferrer" className="btn-doodle btn-gold mt-3 press inline-flex">
-                Sign up →
-              </a>
-            )
+          {e.signupNote && (
+            <p className="font-hand text-ink mt-3">{e.signupNote}</p>
           )}
         </div>
       </div>

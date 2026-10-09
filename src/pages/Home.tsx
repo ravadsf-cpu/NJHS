@@ -1,12 +1,10 @@
 import { Link } from "react-router-dom";
-import { site, isPlaceholder, sortedAlerts, nextDeadline, parseDate } from "../data/site";
+import { site, sortedAlerts, nextDeadline, parseDate } from "../data/site";
 import DoodleWindow from "../components/DoodleWindow";
 import DraggableWindow from "../components/DraggableWindow";
-import PlaceholderBox from "../components/PlaceholderBox";
 import Countdown from "../components/Countdown";
 import ServiceHoursBar from "../components/ServiceHoursBar";
 import Checklist from "../components/Checklist";
-import ShirtVote from "../components/ShirtVote";
 import YouTubeWindow from "../components/YouTubeWindow";
 import QRCode from "../components/QRCode";
 import { FolderDoodle, StarDoodle, HeartDoodle, EnvelopeDoodle, CursorSparkDoodle } from "../components/Doodles";
@@ -18,6 +16,7 @@ const whereDoIFind = [
   { to: "/community-service", label: "Community service" },
   { to: "/photo-gallery", label: "Photo gallery" },
   { to: "/officer-info", label: "Officer info" },
+  { to: "/earn-more", label: "Earn more hours" },
   { to: "/news", label: "News & alerts" },
 ];
 
@@ -73,11 +72,15 @@ export default function Home() {
             <DoodleWindow variant="cream" addressText="lanier-njhs.vercel.app" className="mt-2">
               <div className="text-center">
                 <h1 className="font-display text-5xl sm:text-6xl text-ink leading-none">Lanier NJHS</h1>
-                <p className="font-hand text-xl sm:text-2xl text-ink/80 mt-3">
-                  {site.tagline}
-                </p>
+                <p className="font-hand text-xl sm:text-2xl text-ink/80 mt-3">{site.tagline}</p>
                 <div className="mt-4 mx-auto max-w-sm">
-                  <GroupPhoto />
+                  <img
+                    src={site.groupPhoto}
+                    alt="Lanier NJHS group photo"
+                    loading="lazy"
+                    className="w-full aspect-video object-cover rounded-xl border-[2.5px] border-ink doodle-shadow-sm"
+                  />
+                  <div className="font-hand text-ink/70 text-sm mt-1">{site.groupPhotoCaption}</div>
                 </div>
                 <div className="flex flex-wrap justify-center gap-2 mt-5">
                   <Link to="/news" className="btn-doodle btn-coral press">
@@ -108,7 +111,7 @@ export default function Home() {
               <div className="mt-3"><Countdown date={dl.date} label="In" /></div>
             </>
           ) : (
-            <div className="font-hand text-ink/70">Set a due date on an alert to show it here.</div>
+            <div className="font-hand text-ink/70">You're caught up. No deadlines on the board.</div>
           )}
           <Link to="/news" className="btn-doodle mt-4 press">All deadlines →</Link>
         </DoodleWindow>
@@ -123,10 +126,10 @@ export default function Home() {
         <DoodleWindow variant="mint" addressText="quick-facts">
           <div className="font-hand text-lg text-ink/80 mb-1">Quick facts</div>
           <ul className="font-body text-ink text-base space-y-1">
-            <li>• {site.serviceHours.perMemberRequired} service hours required per member. The chapter project counts.</li>
+            <li>• {site.serviceHours.perMemberRequired} service hours per member. The chapter project counts.</li>
             <li>• 8th graders apply in the fall.</li>
             <li>• 7th graders apply in the spring.</li>
-            <li>• GPA 93+, E in conduct, service outside Lanier.</li>
+            <li>• GPA 93 or higher. E in conduct. Service outside Lanier.</li>
           </ul>
         </DoodleWindow>
       </section>
@@ -182,14 +185,6 @@ export default function Home() {
         </DoodleWindow>
       </section>
 
-      {/* SHIRTS (anchor for /#shirts) */}
-      <section id="shirts" className="mt-10">
-        <DoodleWindow variant="cream" addressText="shirt-vote">
-          <h2 className="font-display text-3xl text-ink mb-3">Vote on shirt colors</h2>
-          <ShirtVote />
-        </DoodleWindow>
-      </section>
-
       {/* WHERE DO I FIND... */}
       <section className="mt-10">
         <h2 className="font-display text-3xl text-ink mb-4">Where do I find...</h2>
@@ -221,7 +216,7 @@ export default function Home() {
             <div>
               <h3 className="font-display text-2xl text-ink">News & alerts</h3>
               <p className="font-body text-ink/80 mt-1">
-                Dues, report cards, pass pickup, meeting recaps. All in one feed.
+                Dues, report cards, pass pickup, meeting recaps, and the shirt vote. All in one feed.
               </p>
               <Link to="/news" className="btn-doodle btn-coral mt-3 press">
                 Open the feed
@@ -233,37 +228,12 @@ export default function Home() {
             <CursorSparkDoodle className="w-10 h-10 shrink-0" />
             <div>
               <h3 className="font-display text-xl text-ink">Need volunteer hours?</h3>
-              <p className="font-body text-ink/80 text-sm mt-0.5">The Volunteer Finder matches you with sign-ups.</p>
-              <Link to="/community-service#finder" className="btn-doodle btn-mint mt-2 press">Open the Finder</Link>
+              <p className="font-body text-ink/80 text-sm mt-0.5">The Earn more hours page has tons of sign-ups.</p>
+              <Link to="/earn-more" className="btn-doodle btn-mint mt-2 press">Open Earn more hours</Link>
             </div>
           </div>
         </DoodleWindow>
       </section>
     </div>
-  );
-}
-
-function GroupPhoto() {
-  const current = site.groupPhotoCurrent;
-  if (isPlaceholder(current)) {
-    return (
-      <div>
-        <img
-          src={site.groupPhotoFallback}
-          alt="Lanier NJHS group photo from the 2025 to 2026 school year"
-          loading="lazy"
-          className="w-full aspect-video object-cover rounded-xl border-[2.5px] border-ink doodle-shadow-sm"
-        />
-        <div className="font-hand text-ink/70 text-sm mt-1 text-center">
-          {site.groupPhotoFallbackCaption} (we'll swap this in once we have a 2026 to 2027 group photo).
-        </div>
-        <div className="mt-2 flex justify-center">
-          <PlaceholderBox label={current} what="2026 to 2027 group photo, 16:9" aspect="auto" size="sm" />
-        </div>
-      </div>
-    );
-  }
-  return (
-    <img src={current} alt="Lanier NJHS group photo" loading="lazy" className="w-full aspect-video object-cover rounded-xl border-[2.5px] border-ink doodle-shadow-sm" />
   );
 }

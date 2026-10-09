@@ -1,8 +1,9 @@
 import { useState } from "react";
 import type { Officer } from "../data/site";
-import { isPlaceholder } from "../data/site";
 import DoodleWindow from "./DoodleWindow";
-import PlaceholderBox from "./PlaceholderBox";
+import SmartImage from "./SmartImage";
+import PortraitFallback from "./PortraitFallback";
+import OfficerEmail from "./OfficerEmail";
 import { clsx } from "../lib/clsx";
 
 type Props = { officer: Officer };
@@ -26,43 +27,38 @@ export default function OfficerFlipCard({ officer }: Props) {
     }
   };
 
+  const slug = officer.name.toLowerCase().replace(/\s+/g, "-");
+
   return (
     <div className="w-full" style={{ perspective: "1200px" }}>
-      <button
-        type="button"
-        onClick={toggle}
-        onKeyDown={onKey}
-        aria-pressed={flipped}
-        aria-label={`${officer.name}, ${officer.role}. Tap to see what they do.`}
-        className="relative w-full text-left press"
-        style={{ transformStyle: "preserve-3d" }}
+      <div
+        className="relative"
+        style={{
+          transformStyle: "preserve-3d",
+          transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
+          transition: "transform 0.5s",
+        }}
       >
-        <div
-          className={clsx("relative transition-transform duration-500")}
-          style={{
-            transformStyle: "preserve-3d",
-            transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
-          }}
-        >
-          {/* FRONT */}
-          <div style={{ backfaceVisibility: "hidden" }}>
-            <DoodleWindow variant={variant} addressText={officer.name.toLowerCase().replace(/\s+/g, "")}>
+        {/* FRONT */}
+        <div style={{ backfaceVisibility: "hidden" }}>
+          <button
+            type="button"
+            onClick={toggle}
+            onKeyDown={onKey}
+            aria-pressed={flipped}
+            aria-label={`${officer.name}, ${officer.role}. Tap to see what they do.`}
+            className="relative w-full text-left press"
+          >
+            <DoodleWindow variant={variant} addressText={slug}>
               <div className="flex flex-col items-center">
-                {isPlaceholder(officer.photo) ? (
-                  <PlaceholderBox
-                    label={officer.photo}
-                    what="portrait photo, 3:4"
-                    aspect="3/4"
-                    className="w-full max-w-[220px]"
-                  />
-                ) : (
-                  <img
+                <div className="w-full max-w-[220px] aspect-[3/4] rounded-xl border-[2.5px] border-ink doodle-shadow-sm overflow-hidden bg-paper">
+                  <SmartImage
                     src={officer.photo}
                     alt={`${officer.name}, ${officer.role}`}
-                    loading="lazy"
-                    className="w-full max-w-[220px] aspect-[3/4] object-cover rounded-xl border-[2.5px] border-ink doodle-shadow-sm"
+                    objectPosition="center top"
+                    fallback={<PortraitFallback name={officer.first} />}
                   />
-                )}
+                </div>
                 <div className="mt-3 text-center">
                   <div className="font-hand text-2xl text-ink leading-tight">{officer.name}</div>
                   <div className="font-body text-sm text-ink/70">{officer.role}</div>
@@ -70,33 +66,31 @@ export default function OfficerFlipCard({ officer }: Props) {
                 <div className="mt-2 font-hand text-xs text-ink/60">Tap to see what they do</div>
               </div>
             </DoodleWindow>
-          </div>
-          {/* BACK */}
-          <div
-            className="absolute inset-0"
-            style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
-          >
-            <DoodleWindow variant={variant} addressText="role.txt">
-              <div className="min-h-[320px] flex flex-col text-left">
-                <div className="font-display text-2xl text-ink leading-tight">{officer.name}</div>
-                <div className="font-hand text-ink/70 text-base">{officer.role}</div>
-                <div className="mt-2 font-body text-ink text-sm leading-snug">{officer.duties}</div>
-                <div className="mt-3">
-                  <div className="font-hand text-ink/70 text-xs uppercase tracking-wide">Fun fact</div>
-                  {isPlaceholder(officer.funFact) ? (
-                    <div className="mt-1">
-                      <PlaceholderBox label={officer.funFact} what="one fun fact, one sentence" aspect="auto" size="sm" />
-                    </div>
-                  ) : (
-                    <p className="font-body text-ink text-sm mt-1">{officer.funFact}</p>
-                  )}
-                </div>
-                <div className="mt-auto font-hand text-xs text-ink/60 pt-2">Tap to flip back</div>
-              </div>
-            </DoodleWindow>
-          </div>
+          </button>
         </div>
-      </button>
+        {/* BACK */}
+        <div
+          className={clsx(flipped ? "absolute inset-0" : "hidden")}
+          style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+        >
+          <DoodleWindow variant={variant} addressText="role.txt">
+            <div className="flex flex-col text-left">
+              <div className="font-display text-2xl text-ink leading-tight">{officer.name}</div>
+              <div className="font-hand text-ink/70 text-base">{officer.role}</div>
+              <p className="mt-2 font-body text-ink text-sm leading-snug">{officer.duties}</p>
+              <div className="mt-3">
+                <div className="font-hand text-ink/70 text-xs uppercase tracking-wide">Email</div>
+                <div className="mt-1">
+                  <OfficerEmail user={officer.emailUser} domain={officer.emailDomain} name={officer.name} />
+                </div>
+              </div>
+              <button type="button" onClick={toggle} className="mt-4 self-start btn-doodle press">
+                Flip back
+              </button>
+            </div>
+          </DoodleWindow>
+        </div>
+      </div>
     </div>
   );
 }

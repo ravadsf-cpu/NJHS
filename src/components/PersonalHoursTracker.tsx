@@ -60,7 +60,7 @@ export default function PersonalHoursTracker() {
         <button type="button" onClick={() => update(0)} className="btn-doodle press">Reset</button>
       </div>
       <p className="font-body text-ink/70 text-xs mt-2">
-        Saved on your device only. Doesn't send anywhere.
+        Saved on your device only. Nothing gets sent anywhere.
       </p>
       {done && (
         <div className="mt-3 bg-gold ink-line-thick rounded-xl p-3 font-hand text-ink text-center animate-pop">

@@ -74,15 +74,9 @@ export default function EventSchedule() {
                 <div className="flex-1 min-w-0">
                   <div className="font-display text-xl text-ink leading-tight">{m.title}</div>
                   <div className="font-body text-ink/80 text-sm">
-                    {friendlyFull(m.date)}
+                    {"displayDate" in m && m.displayDate ? m.displayDate : friendlyFull(m.date)}
                   </div>
                   {m.bring && <div className="font-body text-ink/80 text-sm mt-1">Bring: {m.bring}</div>}
-                  {("note" in m && m.note) && (
-                    <div className="mt-1 inline-flex items-center gap-1 bg-paper border-[2px] border-dashed border-ink/60 rounded-md px-1.5 py-0.5 font-hand text-xs text-ink/80">
-                      <span aria-hidden>✎</span>
-                      <span>{m.note}</span>
-                    </div>
-                  )}
                 </div>
               </div>
             </DoodleWindow>
@@ -122,7 +116,10 @@ function CalendarGrid({ items }: { items: (MeetingSlot & { status: Status })[] }
                 <li key={it.date + it.title} className="flex items-center gap-2">
                   <span className={`inline-block w-3 h-3 rounded-full ink-line ${statusMeta[it.status].color} shrink-0`} />
                   <span className="font-body text-ink">
-                    <span className="font-hand text-ink/80">{friendlyShort(it.date)}:</span> {it.title}
+                    <span className="font-hand text-ink/80">
+                      {"displayDate" in it && it.displayDate ? it.displayDate : `${friendlyShort(it.date)}:`}
+                    </span>{" "}
+                    {it.title}
                   </span>
                 </li>
               ))}

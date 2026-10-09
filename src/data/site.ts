@@ -1,95 +1,107 @@
 // Single source of truth. Edit here, pages update automatically.
-// Anywhere you see "[[LIKE_THIS]]" it shows as a dashed placeholder box on the site.
 
 export const site = {
   name: "Lanier NJHS",
   longName: "Lanier National Junior Honor Society",
   school: "Lanier Middle School",
   schoolYear: "2026-2027",
-  url: "[[SITE_URL]]",
+  url: "njhs.vercel.app",
 
   tagline: "Service, events, and deadlines. All in one spot.",
 
   // Group photo on the home page.
-  groupPhotoCurrent: "[[GROUP_PHOTO_2026_27]]",
-  groupPhotoFallback: "/photos/site/group-2025-26.png",
-  groupPhotoFallbackCaption: "2025 to 2026 crew",
+  groupPhoto: "/photos/site/group-2025-26.png",
+  groupPhotoCaption: "Our NJHS crew",
 
-  // Pay dues on SchoolPay (the chapter's live link).
+  // Pay dues on SchoolPay.
   schoolPayUrl:
     "https://www.schoolpay.com/pay/for/LANIER--NATIONAL-JUNIOR-HONOR-SOCIETY--2/SED0NW",
 
-  // Interest meeting slides (same deck the sponsors use each year).
+  // Interest meeting slides.
   interestMeetingSlidesUrl:
     "https://docs.google.com/presentation/d/1yogMbLvUHxl98fsNqlZnmspI24CMOUv3dd4rJmVuVv8/edit?usp=sharing",
 
   // Short intro video from the old site.
   youtubeEmbedUrl: "https://www.youtube.com/embed/hxhBQSKaIC4",
 
-  // Chapter service hours goal + current progress.
+  // October 2026 meeting slides.
+  octoberSlidesUrl: "/downloads/slides/2026-10-meeting.pdf",
+
+  // Chapter service hours progress.
   serviceHours: {
     goal: 2000,
     perMemberRequired: 20,
-    currentPlaceholder: "[[CURRENT_HOURS]]",
-    current: 0, // numeric fallback until the real count is in
-    logDueDate: "[[HOURS_LOG_DUE_DATE]]",
+    current: 0,                                 // update as hours come in
+    logDueDisplay: "Due in January 2027",
     logDownload: "/downloads/service-hours-log-2026-27.pdf",
     logDownloadArchive: "/downloads/service-hours-log-2025-26.pdf",
   },
 
-  // Officers. Portrait photos (3:4). Fun fact goes on the back of the flip card.
+  // Officers. School emails are stored split (ID + domain) so bots that scrape
+  // the raw HTML don't get a complete address. The UI stitches them together
+  // in the browser only when a card renders.
   officers: [
     {
       name: "Andrew DelaGarza",
+      first: "Andrew",
       role: "President",
-      photo: "[[PHOTO_ANDREW]]",
-      funFact: "[[FUNFACT_ANDREW]]",
+      photo: "/photos/officers/andrew-delagarza.jpg",
       color: "coral" as const,
       duties:
         "Runs the club with the sponsors, leads meetings, and plans service projects with the other officers.",
+      emailUser: "S2008874",
+      emailDomain: "online.houstonisd.org",
     },
     {
       name: "Elinam Dzakpasu",
+      first: "Elinam",
       role: "Vice President",
-      photo: "[[PHOTO_ELINAM]]",
-      funFact: "[[FUNFACT_ELINAM]]",
+      photo: "/photos/officers/elinam-dzakpasu.jpg",
       color: "gold" as const,
       duties:
         "Talks to the organizations we volunteer with and works with the sponsors to set things up.",
+      emailUser: "S1974511",
+      emailDomain: "online.houstonisd.org",
     },
     {
       name: "Audrey Chen",
+      first: "Audrey",
       role: "Secretary",
-      photo: "[[PHOTO_AUDREY]]",
-      funFact: "[[FUNFACT_AUDREY]]",
+      photo: "/photos/officers/audrey-chen.jpg",
       color: "mint" as const,
       duties:
         "Helps the sponsors stay organized, takes attendance, and writes down what happens at meetings.",
+      emailUser: "S1973908",
+      emailDomain: "online.houstonisd.org",
     },
     {
       name: "Lily Pham",
+      first: "Lily",
       role: "Historian",
-      photo: "[[PHOTO_LILY]]",
-      funFact: "[[FUNFACT_LILY]]",
+      photo: "/photos/officers/lily-pham.jpg",
       color: "cream" as const,
       duties:
         "Takes photos of everything we do, works with the Webmaster to post them here, and makes the end-of-year album.",
+      emailUser: "S2262208",
+      emailDomain: "online.houstonisd.org",
     },
     {
       name: "Adi Sanghavi",
+      first: "Adi",
       role: "Webmaster",
-      photo: "[[PHOTO_ADI]]",
-      funFact: "[[FUNFACT_ADI]]",
+      photo: "/photos/officers/adi-sanghavi.jpg",
       color: "coral" as const,
       duties:
         "Runs this website and our purple page posts, and works with the Historian to spread the word around school.",
+      emailUser: "S2019399",
+      emailDomain: "online.houstonisd.org",
     },
   ],
 
   sponsors: [
-    { name: "Ms. Elena Cantu", email: "[[SPONSOR_EMAIL_CANTU]]" },
-    { name: "Mr. Juan Castillo", email: "[[SPONSOR_EMAIL_CASTILLO]]" },
-    { name: "Ms. Vaclavik", email: "[[SPONSOR_EMAIL_VACLAVIK]]" },
+    { name: "Ms. Elena Cantu" },
+    { name: "Mr. Juan Castillo" },
+    { name: "Ms. Vaclavik" },
   ],
 
   goals: [
@@ -113,7 +125,7 @@ export const site = {
   // Meeting schedule for the year. Status derived from today's date.
   meetingSchedule: [
     { date: "2026-09-09", kind: "meeting" as const, title: "Chapter meeting #1", bring: "" },
-    { date: "2026-10-15", kind: "meeting" as const, title: "Chapter meeting #2", bring: "", note: "[[CONFIRM: old site said Oct 7]]" },
+    { date: "2026-10-15", kind: "meeting" as const, title: "Chapter meeting #2", bring: "" },
     { date: "2026-10-23", kind: "event"   as const, title: "Roberts International Festival", bring: "" },
     { date: "2026-11-11", kind: "meeting" as const, title: "Chapter meeting #3", bring: "Thanksgiving supplies" },
     { date: "2026-12-09", kind: "meeting" as const, title: "Chapter meeting #4", bring: "Teacher goodie bag supplies" },
@@ -121,10 +133,10 @@ export const site = {
     { date: "2027-02-10", kind: "meeting" as const, title: "Chapter meeting #6", bring: "Valentine's card supplies" },
     { date: "2027-03-01", kind: "break"   as const, title: "No meeting in March", bring: "" },
     { date: "2027-04-14", kind: "meeting" as const, title: "Chapter meeting #7", bring: "" },
-    { date: "2027-05-01", kind: "event"   as const, title: "Induction + luncheon", bring: "", note: "[[INDUCTION_DATE]]" },
+    { date: "2027-05-01", kind: "event"   as const, title: "Induction and luncheon", bring: "", displayDate: "May 2027" },
   ],
 
-  // Events page detail: Roberts Festival etc.
+  // Events page detail: Roberts Festival.
   events: [
     {
       id: "roberts-festival-2026",
@@ -139,20 +151,19 @@ export const site = {
       ],
       about:
         "A yearly community event celebrating cultures from around the world, with performances, activities, and booths about different countries and backgrounds.",
-      signupLink: "[[SIGNUP_LINK_ROBERTS]]",
-      photo: "[[PHOTO_ROBERTS_FESTIVAL]]",
+      signupNote: "Sign-up link is in Ms. Cantu's email.",
+      photo: "/photos/events/roberts-international-festival.jpg",
     },
   ],
 
-  // 8th grade applications.
   applications: {
-    gpaRequirement: "3.7 GPA (93 average) or higher",
+    gpaRequirement: "3.7 GPA or 93 average or higher",
     conductRequirement: "An E in conduct",
     outsideServiceRequirement: "Community service outside of Lanier",
     fall2026Deadline: "2026-08-26",
     fall2026DeadlineTime: "4:00 PM",
     dropoffLocation: "Mrs. Cantu's box in Office B",
-    spring2027OpenDate: "[[SPRING_2027_APP_DATE]]",
+    spring2027OpenDisplay: "Spring 2027",
     questionsFor: ["Mrs. Cantu", "Mr. Castillo", "Mrs. Vaclavik"],
     downloads: [
       { name: "8th grade application", file: "/downloads/8th-grade-application.pdf" },
@@ -162,16 +173,16 @@ export const site = {
     flyerImage: "/photos/site/aug-njhs-flyer.jpg",
   },
 
-  // Alerts for the News & Alerts page + banner. Order matters: urgent first.
+  // Alerts for the News & alerts page + top banner.
   alerts: [
     {
       id: "pay-dues",
       type: "deadline" as const,
       title: "Pay your dues",
       message:
-        "Haven't turned in NJHS dues yet? Do it by Friday [[DUES_DEADLINE_DATE]] or you'll be put on probation.",
+        "Haven't turned in NJHS dues yet? Do it by Friday, October 16, 2026 or you'll be put on probation.",
       posted: "2026-10-01",
-      dueDate: "[[DUES_DEADLINE_DATE]]",
+      dueDate: "2026-10-16",
       urgent: true,
       actions: [{ label: "Pay on SchoolPay", kind: "external" as const, href: "@schoolpay" }],
     },
@@ -180,9 +191,9 @@ export const site = {
       type: "deadline" as const,
       title: "Turn in your report card",
       message:
-        "When you get your report card, drop it in Ms. Cantu's box in Office B. Need another copy? Ask the Attendance Office. Due by Friday [[REPORT_CARD_DEADLINE_DATE]] or you'll be put on probation.",
+        "When you get your report card, drop it in Ms. Cantu's box in Office B. Need another copy? Ask the Attendance Office. Due by Friday, October 16, 2026 or you'll be put on probation.",
       posted: "2026-10-01",
-      dueDate: "[[REPORT_CARD_DEADLINE_DATE]]",
+      dueDate: "2026-10-16",
       urgent: true,
       actions: [],
     },
@@ -202,33 +213,33 @@ export const site = {
       type: "announcement" as const,
       title: "Hours log due",
       message:
-        "Service hours log is due [[HOURS_LOG_DUE_DATE]]. 20 hours total. Download the log, fill it in, hand it to Ms. Cantu.",
+        "The service hours log is due in January 2027. You need 20 hours total. Download the log, fill it in, and hand it to Ms. Cantu.",
       posted: "2026-10-05",
-      dueDate: "[[HOURS_LOG_DUE_DATE]]",
+      dueDate: "",
       urgent: false,
       actions: [{ label: "Download the log", kind: "internal" as const, href: "/downloads/service-hours-log-2026-27.pdf" }],
     },
     {
-      id: "volunteer-finder",
+      id: "earn-more-hours",
       type: "announcement" as const,
-      title: "Need hours?",
+      title: "Need more hours?",
       message:
-        "Try the new Volunteer Finder. Filter by what sounds fun and you'll get matching sign-ups.",
+        "Our new Earn more hours page has tons of volunteer spots around Houston. Filter by what sounds fun and you'll get sign-ups.",
       posted: "2026-10-09",
       dueDate: "",
       urgent: false,
-      actions: [{ label: "Open the Finder", kind: "route" as const, href: "/community-service#finder" }],
+      actions: [{ label: "Open Earn more hours", kind: "route" as const, href: "/earn-more" }],
     },
     {
       id: "roberts-festival",
       type: "announcement" as const,
       title: "Roberts Festival sign-ups",
       message:
-        "Shifts for the Roberts International Festival are open. Pick a time slot that works.",
+        "Shifts for the Roberts International Festival are open. Pick a time slot that works. The sign-up link is in Ms. Cantu's email.",
       posted: "2026-10-05",
       dueDate: "2026-10-23",
       urgent: false,
-      actions: [{ label: "Find a shift", kind: "route" as const, href: "/community-service#finder" }],
+      actions: [{ label: "See the event", kind: "route" as const, href: "/important-events" }],
     },
     {
       id: "library-pass",
@@ -242,21 +253,10 @@ export const site = {
       actions: [],
     },
     {
-      id: "shirt-vote",
-      type: "announcement" as const,
-      title: "Vote on shirt colors",
-      message:
-        "We're picking NJHS shirt colors: blue, white, gold, or a combo. Try the color picker on the home page.",
-      posted: "2026-10-05",
-      dueDate: "",
-      urgent: false,
-      actions: [{ label: "Go pick", kind: "route" as const, href: "/#shirts" }],
-    },
-    {
       id: "new-site",
       type: "goodnews" as const,
       title: "We have a new website!",
-      message: "You're on it. Bookmark it: [[SITE_URL]]",
+      message: "You're on it. Bookmark it: njhs.vercel.app",
       posted: "2026-10-09",
       dueDate: "",
       urgent: false,
@@ -275,7 +275,7 @@ export const site = {
     // Template. Uncomment and edit to add a new alert.
     // {
     //   id: "unique-id",
-    //   type: "announcement", // or "deadline" or "goodnews"
+    //   type: "announcement",
     //   title: "Short title",
     //   message: "What members need to know.",
     //   posted: "YYYY-MM-DD",
@@ -285,7 +285,7 @@ export const site = {
     // },
   ],
 
-  // T-shirt color options. Winner slot gets filled in after the vote.
+  // Shirt color vote. Lives on News & alerts as a pinned top card.
   shirts: {
     options: [
       { id: "blue",  name: "Blue",  hex: "#2E86AB" },
@@ -293,11 +293,8 @@ export const site = {
       { id: "gold",  name: "Gold",  hex: "#FFC966" },
       { id: "combo", name: "Combo", hex: "linear-gradient(135deg,#2E86AB 0 33%,#FFFFFF 33% 66%,#FFC966 66% 100%)" },
     ],
-    designImage: "[[SHIRT_DESIGN_IMAGE]]",
-    winner: "[[SHIRT_VOTE_RESULT]]",
   },
 
-  // Checklist shown on home. 4 items so the completion state is satisfying.
   checklist: [
     { id: "dues",       label: "Dues paid" },
     { id: "reportcard", label: "Report card turned in" },
@@ -316,16 +313,8 @@ export type SiteEvent = (typeof site.events)[number];
 export type ShirtOption = (typeof site.shirts.options)[number];
 export type MeetingSlot = (typeof site.meetingSchedule)[number];
 
-export function isPlaceholder(v: string | undefined | null): boolean {
-  if (!v) return false;
-  return /^\[\[.+\]\]$/.test(v.trim());
-}
-
 export function parseDate(v: string | undefined | null): Date | null {
   if (!v) return null;
-  if (isPlaceholder(v)) return null;
-  // "YYYY-MM-DD" without a time is parsed as UTC midnight by Date(), which
-  // then shifts a day earlier in US timezones. Treat these as local midnight.
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v.trim());
   if (m) {
     const [, y, mo, da] = m;
@@ -357,11 +346,10 @@ export function sortedAlerts(dismissed: string[] = []): AlertItem[] {
   return list;
 }
 
-// Pick the earliest urgent deadline for the home-page "next deadline" card.
 export function nextDeadline(): { title: string; date: string } | null {
   const now = new Date();
   const candidates = site.alerts
-    .filter((a) => a.dueDate && !isPlaceholder(a.dueDate))
+    .filter((a) => a.dueDate)
     .map((a) => ({ title: a.title, date: a.dueDate, d: parseDate(a.dueDate) }))
     .filter((x): x is { title: string; date: string; d: Date } => x.d !== null && x.d.getTime() >= now.getTime())
     .sort((a, b) => a.d.getTime() - b.d.getTime());
@@ -369,8 +357,12 @@ export function nextDeadline(): { title: string; date: string } | null {
   return { title: candidates[0].title, date: candidates[0].date };
 }
 
-// Expand "@schoolpay" and friends when rendering alert action hrefs.
 export function resolveActionHref(href: string): string {
   if (href === "@schoolpay") return site.schoolPayUrl;
   return href;
+}
+
+// Browser-only email assembly, so the raw HTML never contains the full address.
+export function officerEmail(o: Officer): string {
+  return `${o.emailUser}@${o.emailDomain}`;
 }

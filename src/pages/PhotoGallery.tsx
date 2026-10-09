@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { albums } from "../data/gallery";
 import DoodleWindow from "../components/DoodleWindow";
-import PlaceholderBox from "../components/PlaceholderBox";
 import Lightbox from "../components/Lightbox";
 import { FolderDoodle } from "../components/Doodles";
 
@@ -41,7 +40,7 @@ function AlbumsIndex() {
                   <h3 className="font-display text-xl text-ink leading-tight">{a.title}</h3>
                   {a.blurb && <p className="font-body text-ink/80 text-sm mt-0.5">{a.blurb}</p>}
                   <div className="font-hand text-ink/70 text-sm mt-1">
-                    {a.photos.length > 0 ? `${a.photos.length} photos` : "Empty for now"}
+                    {a.photos.length} photos
                   </div>
                 </div>
               </div>
@@ -91,12 +90,9 @@ function AlbumView({ album }: { album: (typeof albums)[number] }) {
             />
           </button>
         ))}
-        {album.placeholders?.map((label) => (
-          <PlaceholderBox key={label} label={label} what="album photos" aspect="1/1" />
-        ))}
       </div>
 
-      {album.photos.length === 0 && !album.placeholders?.length && (
+      {album.photos.length === 0 && (
         <DoodleWindow variant="cream" className="mt-5">
           <p className="font-hand text-ink/70">No photos in this album yet. Check back after a meeting.</p>
         </DoodleWindow>

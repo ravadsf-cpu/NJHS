@@ -7,6 +7,7 @@ import CommunityService from "./pages/CommunityService";
 import PhotoGallery from "./pages/PhotoGallery";
 import OfficerInfo from "./pages/OfficerInfo";
 import News from "./pages/News";
+import EarnMore from "./pages/EarnMore";
 import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -31,12 +32,13 @@ export default function App() {
           <Route path="/photo-gallery/:albumSlug" element={<PhotoGallery />} />
           <Route path="/officer-info" element={<OfficerInfo />} />
           <Route path="/news" element={<News />} />
+          <Route path="/earn-more" element={<EarnMore />} />
 
           {/* Redirects from previous URLs. */}
           <Route path="/officers" element={<Navigate to="/officer-info" replace />} />
           <Route path="/events" element={<Navigate to="/important-events" replace />} />
-          <Route path="/shirts" element={<Navigate to="/#shirts" replace />} />
-          <Route path="/contact" element={<Navigate to="/officer-info" replace />} />
+          <Route path="/shirts" element={<Navigate to="/news#shirts" replace />} />
+          <Route path="/contact" element={<Navigate to="/officer-info#contact" replace />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

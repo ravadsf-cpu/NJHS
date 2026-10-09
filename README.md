@@ -28,21 +28,27 @@ make sure unknown routes fall back to `index.html`.
 
 ## Updating content
 
-Everything editable lives in `src/data/site.ts`:
+Everything editable lives in `src/data/`:
 
-- Officers (name, role, photo, fun fact)
-- Events (upcoming + past, with schedule, signup, photo)
-- News & Alerts feed
-- Shirt options and vote winner
-- Checklist items
-- Contact info (sponsor name, sponsor email, Google Form link)
-- Service hours goal and current count
-
-Anywhere you see `[[LIKE_THIS]]`, that is a visible placeholder on the live site.
-Replace it with real content and it stops showing the dashed box.
+- `site.ts`: officers, events, alerts, checklist, shirt options, service hours
+- `meetings.ts`: meeting minutes
+- `opportunities.ts`: Volunteer opportunities for the Earn more hours page
+- `gallery.ts`: photo albums
 
 ### Adding an alert
 
 Open `src/data/site.ts`, scroll to `alerts`, copy the commented template at
 the bottom, and fill it in. Urgent alerts float to the top and show up in the
 banner across every page.
+
+### Adding a volunteer opportunity
+
+Open `src/data/opportunities.ts` and copy the commented template. For dated
+events, set `type: "event"` and add ISO dates in `dates: []`.
+
+### Dropping in new photos
+
+- Officer portraits go in `/public/photos/officers/` as `first-last.jpg`.
+- Event photos go in `/public/photos/events/` with the same slug as the event id.
+- Gallery albums live under `/public/photos/gallery/<album>/` and are registered in `src/data/gallery.ts`.
+- Downloadable files go in `/public/downloads/`.

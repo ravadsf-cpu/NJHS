@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { sortedAlerts } from "../data/site";
+import NavDropdown from "./NavDropdown";
+import SmartImage from "./SmartImage";
 
 const links = [
   { to: "/", label: "Home", end: true },
@@ -13,6 +15,18 @@ const links = [
   { to: "/news", label: "News & alerts" },
 ];
 
+function LogoMark() {
+  return (
+    <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-cream ink-line-thick doodle-shadow-sm overflow-hidden">
+      <SmartImage
+        src="/logo/njhs-emblem.png"
+        alt="NJHS emblem"
+        fallback={<span className="font-display text-xl text-ink">N</span>}
+      />
+    </span>
+  );
+}
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const alertCount = sortedAlerts().filter((a) => a.urgent).length;
@@ -21,9 +35,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 bg-sky-doodle/90 backdrop-blur-sm border-b-[2.5px] border-ink">
       <div className="mx-auto max-w-7xl px-4 py-2 flex items-center gap-3">
         <Link to="/" className="flex items-center gap-2 press">
-          <span className="inline-flex items-center justify-center w-9 h-9 bg-cream ink-line-thick rounded-lg doodle-shadow-sm font-display text-xl">
-            N
-          </span>
+          <LogoMark />
           <span className="font-display text-2xl text-ink leading-none hidden sm:inline">Lanier NJHS</span>
         </Link>
 
@@ -50,6 +62,10 @@ export default function Navbar() {
         </nav>
 
         <div className="flex-1" />
+
+        <div className="hidden lg:block">
+          <NavDropdown />
+        </div>
 
         <button
           type="button"
@@ -86,6 +102,9 @@ export default function Navbar() {
                 </NavLink>
               </li>
             ))}
+            <li className="mt-2">
+              <NavDropdown variant="menu" onItemClick={() => setOpen(false)} />
+            </li>
           </ul>
         </nav>
       )}

@@ -1,10 +1,10 @@
 export type Meeting = {
-  date: string;        // ISO
-  display: string;     // human-friendly date to show
-  year: string;        // "2026-27", "2025-26"
-  recap: string;       // short, student voice
-  slidesUrl?: string;  // optional
-  slidesLocal?: string;// optional, local PDF
+  date: string;
+  display: string;
+  year: string;
+  recap: string;
+  slidesUrl?: string;
+  slidesLocal?: string;
 };
 
 // Newest first in each school year.
@@ -15,15 +15,15 @@ export const meetings: Meeting[] = [
     display: "Oct 15, 2026",
     year: "2026-27",
     recap:
-      "Met the new officers and went over our goals (relationships, change, 2,000 hours). Roberts Festival is Oct 23. Dues and report cards due Friday or you go on probation. Contracts were due Sept 23. Get your library pass. Talked shirt colors and showed off the new website.",
+      "Met the new officers and went over our goals: relationships, change, and 2,000 hours as a chapter. Roberts Festival is Oct 23. Dues and report cards due Friday, Oct 16 or you go on probation. Contracts were due Sept 23. Get your library pass. Talked shirt colors and showed off the new website.",
     slidesLocal: "/downloads/slides/2026-10-meeting.pdf",
   },
   {
     date: "2026-09-09",
     display: "Sept 9, 2026",
     year: "2026-27",
-    recap: "[[SEPT_2026_RECAP]]",
-    slidesUrl: "[[SEPT_2026_SLIDES_LINK]]",
+    recap:
+      "First meeting of the year! Went over what NJHS is, what's expected of members, dues, contracts, and the dates for the year.",
   },
 
   // 2025 to 2026 archive
