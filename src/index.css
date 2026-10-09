@@ -1,65 +1,99 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Gochi+Hand&family=Nunito:wght@400;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --ink: #2B2B2B;
+  --sky: #8FD9F2;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
   }
   body {
-    background: #000;
-    color: #fff;
-    font-family:
-      -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
+    font-family: "Nunito", ui-sans-serif, system-ui, sans-serif;
+    color: var(--ink);
+    background-color: var(--sky);
+    background-image:
+      linear-gradient(rgba(255,255,255,0.55) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.55) 1px, transparent 1px);
+    background-size: 28px 28px;
+    background-position: -1px -1px;
+    min-height: 100vh;
     overflow-x: hidden;
   }
-  ::selection {
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
+  h1, h2, h3, h4 {
+    font-family: "Gochi Hand", "Patrick Hand", cursive;
+    letter-spacing: 0.5px;
+    line-height: 1.05;
   }
-  input, textarea, button {
-    font-family: inherit;
-  }
+  ::selection { background: #FFC966; color: #2B2B2B; }
+  button { font-family: inherit; }
 }
 
 @layer components {
-  .liquid-glass {
-    background: rgba(255, 255, 255, 0.01);
-    background-blend-mode: luminosity;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    border: none;
-    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
-    position: relative;
-    overflow: hidden;
+  .ink-line {
+    border: 2.5px solid var(--ink);
   }
-
-  .liquid-glass::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1.4px;
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.45) 0%,
-      rgba(255, 255, 255, 0.15) 20%,
-      rgba(255, 255, 255, 0) 40%,
-      rgba(255, 255, 255, 0) 60%,
-      rgba(255, 255, 255, 0.15) 80%,
-      rgba(255, 255, 255, 0.45) 100%
-    );
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
+  .ink-line-thick {
+    border: 3px solid var(--ink);
   }
+  .doodle-shadow {
+    box-shadow: 4px 4px 0 0 var(--ink);
+  }
+  .doodle-shadow-sm {
+    box-shadow: 3px 3px 0 0 var(--ink);
+  }
+  .doodle-shadow-lg {
+    box-shadow: 6px 6px 0 0 var(--ink);
+  }
+  .press {
+    transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
+  }
+  .press:hover {
+    transform: translate(-1px, -1px);
+  }
+  .press:active {
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0 0 var(--ink);
+  }
+  .btn-doodle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 1.1rem;
+    font-family: "Patrick Hand", cursive;
+    font-size: 1.15rem;
+    background: #FFF5E4;
+    color: #2B2B2B;
+    border: 2.5px solid #2B2B2B;
+    border-radius: 14px;
+    box-shadow: 3px 3px 0 0 #2B2B2B;
+    cursor: pointer;
+  }
+  .btn-doodle.btn-gold { background: #FFC966; }
+  .btn-doodle.btn-coral { background: #FF7F66; }
+  .btn-doodle.btn-mint { background: #B8F5EF; }
 
-  .serif { font-family: "Instrument Serif", serif; }
-  .serif-italic { font-family: "Instrument Serif", serif; font-style: italic; }
+  .window-tab-dots > span {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid #2B2B2B;
+    margin-right: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

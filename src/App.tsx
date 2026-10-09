@@ -1,37 +1,36 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Events from "./pages/Events";
-import MeetingMinutes from "./pages/MeetingMinutes";
-import Applications from "./pages/Applications";
-import CommunityService from "./pages/CommunityService";
-import PhotoGallery from "./pages/PhotoGallery";
 import Officers from "./pages/Officers";
+import Events from "./pages/Events";
+import News from "./pages/News";
+import Shirts from "./pages/Shirts";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
+import AlertBanner from "./components/AlertBanner";
+import CursorSparkle from "./components/CursorSparkle";
 
 export default function App() {
-  const location = useLocation();
-  const isHome = location.pathname === "/";
-
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col">
+    <div className="min-h-screen flex flex-col text-ink">
       <ScrollToTop />
-      {!isHome && <Navbar variant="solid" />}
+      <AlertBanner />
+      <Navbar />
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/meeting-minutes" element={<MeetingMinutes />} />
-          <Route path="/applications" element={<Applications />} />
-          <Route path="/community-service" element={<CommunityService />} />
-          <Route path="/photo-gallery" element={<PhotoGallery />} />
           <Route path="/officers" element={<Officers />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/news" element={<News />} />
+          <Route path="/shirts" element={<Shirts />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <Footer />
+      <CursorSparkle />
     </div>
   );
 }
