@@ -14,6 +14,8 @@ import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import AlertBanner from "./components/AlertBanner";
 import CursorSparkle from "./components/CursorSparkle";
+import MobileTabBar from "./components/MobileTabBar";
+import BackToTop from "./components/BackToTop";
 
 export default function App() {
   return (
@@ -44,6 +46,8 @@ export default function App() {
         </Routes>
       </main>
       <Footer />
+      <MobileTabBar />
+      <BackToTop />
       <CursorSparkle />
     </div>
   );

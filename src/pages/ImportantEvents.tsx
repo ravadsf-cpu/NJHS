@@ -43,18 +43,18 @@ function EventCard({ e }: { e: SiteEvent }) {
 
 export default function ImportantEvents() {
   return (
-    <div className="mx-auto max-w-6xl px-4 pt-8 pb-10">
-      <h1 className="font-display text-4xl sm:text-5xl text-ink">Important events</h1>
-      <p className="font-hand text-xl text-ink/80 mt-1">
+    <div className="mx-auto max-w-6xl px-4 pt-6 md:pt-8 pb-10">
+      <h1 className="font-display text-ink">Important events</h1>
+      <p className="font-hand text-ink/80 mt-1" style={{ fontSize: "clamp(16px, 4vw, 20px)" }}>
         Chapter meetings and the big dates for {site.schoolYear.replace("-", " to ")}.
       </p>
 
-      <div className="mt-6">
+      <div className="mt-5 md:mt-6">
         <EventSchedule />
       </div>
 
-      <section className="mt-10">
-        <h2 className="font-display text-3xl text-ink mb-4">Featured event</h2>
+      <section className="mt-8 md:mt-10">
+        <h2 className="font-display text-ink mb-3 md:mb-4">Featured event</h2>
         <div className="grid gap-5">
           {site.events.map((e) => <EventCard key={e.id} e={e} />)}
         </div>

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { site, sortedAlerts, nextDeadline, parseDate } from "../data/site";
+import { site, sortedAlerts, nextDeadline, parseDate, isPastEvent } from "../data/site";
 import DoodleWindow from "../components/DoodleWindow";
 import DraggableWindow from "../components/DraggableWindow";
 import Countdown from "../components/Countdown";
@@ -7,6 +7,8 @@ import ServiceHoursBar from "../components/ServiceHoursBar";
 import Checklist from "../components/Checklist";
 import YouTubeWindow from "../components/YouTubeWindow";
 import QRCode from "../components/QRCode";
+import SwipeRow from "../components/SwipeRow";
+import CollapseWindow from "../components/CollapseWindow";
 import { FolderDoodle, StarDoodle, HeartDoodle, EnvelopeDoodle, CursorSparkDoodle } from "../components/Doodles";
 
 const whereDoIFind = [
@@ -26,16 +28,27 @@ function friendlyDate(dateStr: string): string {
   return d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
 }
 
+function nextUpcomingMeeting() {
+  const now = new Date();
+  return site.meetingSchedule.find((m) => {
+    const d = parseDate(m.date);
+    if (!d) return false;
+    return !isPastEvent(m.date, now);
+  });
+}
+
 export default function Home() {
   const dl = nextDeadline();
+  const nextMeeting = nextUpcomingMeeting();
   const alertCount = sortedAlerts().filter((a) => a.urgent).length;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 pt-8 pb-10">
+    <div className="mx-auto max-w-6xl px-4 pt-6 md:pt-8 pb-10">
       {/* HERO */}
       <section className="relative">
-        <div className="relative min-h-[360px] sm:min-h-[420px]">
-          <div className="pointer-events-none absolute inset-0 hidden sm:block">
+        <div className="relative md:min-h-[420px]">
+          {/* Decorative draggable windows — desktop only. */}
+          <div className="pointer-events-none absolute inset-0 hidden md:block decor-mobile-hide">
             <div className="pointer-events-auto absolute inset-0">
               <DraggableWindow initialX={-20} initialY={30} rotate={-4} z={1} className="w-[170px]">
                 <DoodleWindow variant="mint" addressText="todo.txt">
@@ -68,21 +81,27 @@ export default function Home() {
             </div>
           </div>
 
+          {/* HERO CARD. Compact on mobile. */}
           <div className="relative z-10 mx-auto max-w-2xl">
-            <DoodleWindow variant="cream" addressText="lanier-njhs.vercel.app" className="mt-2">
+            <DoodleWindow variant="cream" addressText="lanier-njhs.vercel.app" className="mt-0 md:mt-2">
               <div className="text-center">
-                <h1 className="font-display text-5xl sm:text-6xl text-ink leading-none">Lanier NJHS</h1>
-                <p className="font-hand text-xl sm:text-2xl text-ink/80 mt-3">{site.tagline}</p>
-                <div className="mt-4 mx-auto max-w-sm">
+                <h1 className="font-display text-ink leading-none" style={{ fontSize: "clamp(32px, 10vw, 60px)" }}>
+                  Lanier NJHS
+                </h1>
+                <p className="font-hand text-ink/80 mt-2 md:mt-3" style={{ fontSize: "clamp(16px, 4.5vw, 24px)" }}>
+                  {site.tagline}
+                </p>
+                <div className="mt-3 md:mt-4 mx-auto max-w-sm">
                   <img
                     src={site.groupPhoto}
                     alt="Lanier NJHS group photo"
                     loading="lazy"
-                    className="w-full aspect-video object-cover rounded-xl border-[2.5px] border-ink doodle-shadow-sm"
+                    className="w-full object-cover rounded-xl border-[2.5px] border-ink doodle-shadow-sm"
+                    style={{ aspectRatio: "16/9" }}
                   />
                   <div className="font-hand text-ink/70 text-sm mt-1">{site.groupPhotoCaption}</div>
                 </div>
-                <div className="flex flex-wrap justify-center gap-2 mt-5">
+                <div className="hidden md:flex flex-wrap justify-center gap-2 mt-5">
                   <Link to="/news" className="btn-doodle btn-coral press">
                     News & alerts
                     {alertCount > 0 && (
@@ -100,8 +119,101 @@ export default function Home() {
         </div>
       </section>
 
-      {/* QUICK ROW */}
-      <section className="mt-8 grid gap-5 md:grid-cols-3">
+      {/* MOBILE: compact countdowns side-by-side. */}
+      <section className="md:hidden mt-4">
+        <div className="grid grid-cols-2 gap-3">
+          <DoodleWindow variant="coral" addressText="deadline">
+            <div className="font-hand text-xs text-ink/80">Next deadline</div>
+            {dl ? (
+              <>
+                <div className="font-display text-base leading-tight mt-0.5">{dl.title}</div>
+                <div className="font-hand text-xs text-ink/70">{friendlyDate(dl.date)}</div>
+                <div className="mt-1"><Countdown date={dl.date} compact /></div>
+              </>
+            ) : (
+              <div className="font-hand text-ink/70 text-sm mt-1">All caught up.</div>
+            )}
+          </DoodleWindow>
+          <DoodleWindow variant="mint" addressText="meeting">
+            <div className="font-hand text-xs text-ink/80">Next event</div>
+            {nextMeeting ? (
+              <>
+                <div className="font-display text-base leading-tight mt-0.5">{nextMeeting.title}</div>
+                <div className="font-hand text-xs text-ink/70">{friendlyDate(nextMeeting.date)}</div>
+                <div className="mt-1"><Countdown date={nextMeeting.date} compact /></div>
+              </>
+            ) : (
+              <div className="font-hand text-ink/70 text-sm mt-1">Nothing scheduled.</div>
+            )}
+          </DoodleWindow>
+        </div>
+      </section>
+
+      {/* MOBILE: checklist. */}
+      <section className="md:hidden mt-4">
+        <DoodleWindow variant="cream" addressText="checklist">
+          <Checklist />
+        </DoodleWindow>
+      </section>
+
+      {/* MOBILE: service hours bar. */}
+      <section className="md:hidden mt-4">
+        <DoodleWindow variant="gold" addressText="hours.log">
+          <ServiceHoursBar />
+        </DoodleWindow>
+      </section>
+
+      {/* MOBILE: Where do I find swipe row. */}
+      <section className="md:hidden mt-5">
+        <h2 className="font-display text-ink mb-2 px-1">Where do I find...</h2>
+        <SwipeRow variant="folder" ariaLabel="Site sections">
+          {whereDoIFind.map((item) => (
+            <Link key={item.to} to={item.to} className="press block">
+              <DoodleWindow variant="white" addressText={item.to}>
+                <div className="flex flex-col items-center gap-2 text-center py-2">
+                  <FolderDoodle className="w-16 h-12 shrink-0" />
+                  <div className="font-display text-base text-ink leading-tight">{item.label}</div>
+                </div>
+              </DoodleWindow>
+            </Link>
+          ))}
+        </SwipeRow>
+      </section>
+
+      {/* MOBILE: everything else collapsed. */}
+      <section className="md:hidden mt-5 space-y-3">
+        <CollapseWindow title="Pay your dues" preview="SchoolPay or scan the QR" variant="coral">
+          <PayDuesBody />
+        </CollapseWindow>
+        <CollapseWindow title="Our goals this year" preview="Relationships, change, 2,000 hours" variant="mint">
+          <ul className="space-y-2">
+            {site.goals.map((g) => (
+              <li key={g.title} className="bg-paper ink-line rounded-xl p-3">
+                <div className="font-display text-lg text-ink">{g.title}</div>
+                <div className="font-body text-ink text-sm mt-0.5">{g.body}</div>
+              </li>
+            ))}
+          </ul>
+        </CollapseWindow>
+        <CollapseWindow title="New here?" preview="Watch the video, flip through the slides" variant="gold">
+          <YouTubeWindow url={site.youtubeEmbedUrl} title="Lanier NJHS intro video" />
+          <a href={site.interestMeetingSlidesUrl} target="_blank" rel="noreferrer" className="btn-doodle mt-3 press inline-flex">
+            Open the slides →
+          </a>
+        </CollapseWindow>
+        <CollapseWindow title="Quick facts" preview="20 hours, GPA 93+, E conduct" variant="cream">
+          <ul className="font-body text-ink text-base space-y-1.5">
+            <li>• {site.serviceHours.perMemberRequired} service hours per member. The chapter project counts.</li>
+            <li>• 8th graders apply in the fall.</li>
+            <li>• 7th graders apply in the spring.</li>
+            <li>• GPA 93 or higher. E in conduct. Service outside Lanier.</li>
+          </ul>
+        </CollapseWindow>
+      </section>
+
+      {/* DESKTOP ONLY from here down. */}
+
+      <section className="hidden md:grid mt-8 gap-5 md:grid-cols-3">
         <DoodleWindow variant="coral" addressText="next-deadline">
           <div className="font-hand text-lg text-ink/80 mb-1">Next deadline</div>
           {dl ? (
@@ -134,8 +246,7 @@ export default function Home() {
         </DoodleWindow>
       </section>
 
-      {/* DUES / SCHOOLPAY */}
-      <section className="mt-8">
+      <section className="hidden md:block mt-8">
         <DoodleWindow variant="cream" addressText="pay-dues">
           <div className="grid gap-5 md:grid-cols-[1fr_auto] items-center">
             <div>
@@ -160,8 +271,7 @@ export default function Home() {
         </DoodleWindow>
       </section>
 
-      {/* GOALS */}
-      <section className="mt-10">
+      <section className="hidden md:block mt-10">
         <h2 className="font-display text-3xl sm:text-4xl text-ink mb-4">Our goals this year</h2>
         <div className="grid gap-5 md:grid-cols-3">
           {site.goals.map((g) => (
@@ -173,8 +283,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* VIDEO */}
-      <section className="mt-10 grid gap-5 md:grid-cols-[2fr_1fr]">
+      <section className="hidden md:grid mt-10 gap-5 md:grid-cols-[2fr_1fr]">
         <YouTubeWindow url={site.youtubeEmbedUrl} title="Lanier NJHS intro video" />
         <DoodleWindow variant="gold" addressText="slides">
           <h3 className="font-display text-2xl text-ink">New here?</h3>
@@ -185,8 +294,7 @@ export default function Home() {
         </DoodleWindow>
       </section>
 
-      {/* WHERE DO I FIND... */}
-      <section className="mt-10">
+      <section className="hidden md:block mt-10">
         <h2 className="font-display text-3xl text-ink mb-4">Where do I find...</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {whereDoIFind.map((item) => (
@@ -205,8 +313,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CHECKLIST + CTA */}
-      <section className="mt-10 grid gap-5 md:grid-cols-2">
+      <section className="hidden md:grid mt-10 gap-5 md:grid-cols-2">
         <DoodleWindow variant="cream" addressText="checklist">
           <Checklist />
         </DoodleWindow>
@@ -234,6 +341,25 @@ export default function Home() {
           </div>
         </DoodleWindow>
       </section>
+    </div>
+  );
+}
+
+function PayDuesBody() {
+  return (
+    <div>
+      <p className="font-body text-ink">
+        Dues go through SchoolPay. Scan the QR code or tap the button.
+      </p>
+      <div className="mt-3 flex items-center gap-4 flex-wrap">
+        <a href={site.schoolPayUrl} target="_blank" rel="noreferrer" className="btn-doodle btn-coral press">
+          Pay on SchoolPay →
+        </a>
+        <div className="bg-paper ink-line rounded-xl p-2 doodle-shadow-sm">
+          <QRCode value={site.schoolPayUrl} size={120} title="SchoolPay dues QR code" />
+        </div>
+      </div>
+      <p className="font-body text-ink/70 text-xs mt-2">Already paid? Double-check it went through.</p>
     </div>
   );
 }

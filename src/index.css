@@ -97,3 +97,114 @@
     transition-duration: 0.001ms !important;
   }
 }
+
+/* MOBILE OVERRIDES. Everything in this block is phone-only.
+   Desktop at >= 768px keeps the exact look it had before. */
+@media (max-width: 767px) {
+  body {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  h1 { font-size: clamp(32px, 10vw, 44px); line-height: 1.1; }
+  h2 { font-size: clamp(22px, 7vw, 28px); line-height: 1.15; }
+  h3 { font-size: clamp(18px, 5.5vw, 24px); line-height: 1.2; }
+
+  /* Thinner outlines + softer shadows so cards feel less heavy. */
+  .ink-line        { border-width: 2px; }
+  .ink-line-thick  { border-width: 2.25px; }
+  .doodle-shadow     { box-shadow: 3px 3px 0 0 var(--ink); }
+  .doodle-shadow-sm  { box-shadow: 2px 2px 0 0 var(--ink); }
+  .doodle-shadow-lg  { box-shadow: 4px 4px 0 0 var(--ink); }
+
+  /* ●●● window title bar: slimmer. */
+  .window-tab-dots > span {
+    width: 8px;
+    height: 8px;
+    border-width: 1.5px;
+    margin-right: 4px;
+  }
+
+  /* Buttons: comfortable tap targets. */
+  .btn-doodle {
+    min-height: 44px;
+    padding: 0.5rem 0.9rem;
+    font-size: 1rem;
+    box-shadow: 2px 2px 0 0 var(--ink);
+  }
+
+  /* Decorations hide on phones so content has room. */
+  .decor-mobile-hide { display: none !important; }
+
+  /* Leave room for the bottom tab bar + home indicator. */
+  main { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+}
+
+/* Only trigger hover effects on devices that actually have hover. */
+@media (hover: none) {
+  .press:hover { transform: none; }
+}
+
+/* Horizontal swipe row with scroll-snap. */
+.swipe-row {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 4px 16px 8px;
+  margin: 0 -16px;
+}
+.swipe-row::-webkit-scrollbar { display: none; }
+.swipe-row > * {
+  scroll-snap-align: start;
+  flex: 0 0 82%;
+  min-width: 0;
+}
+.swipe-row.swipe-row-folder > * { flex: 0 0 58%; }
+.swipe-row.swipe-row-chip > * { flex: 0 0 auto; scroll-snap-align: center; }
+@media (min-width: 768px) {
+  /* On tablet+ the swipe rows become plain horizontal rows if needed; by
+     default each page uses the desktop grid instead. */
+  .swipe-row { margin: 0; padding: 0; overflow: visible; }
+  .swipe-row > * { flex: initial; }
+}
+
+/* Bottom-sheet backdrop + panel */
+.bottom-sheet-root {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: flex-end;
+}
+.bottom-sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(43,43,43,0.55);
+}
+.bottom-sheet-panel {
+  position: relative;
+  width: 100%;
+  max-height: 86vh;
+  background: #FDFCF7;
+  border-top: 2.5px solid var(--ink);
+  border-top-left-radius: 22px;
+  border-top-right-radius: 22px;
+  box-shadow: 0 -6px 0 0 var(--ink);
+  display: flex;
+  flex-direction: column;
+  padding-bottom: env(safe-area-inset-bottom);
+  animation: sheetUp 0.24s ease-out;
+}
+@keyframes sheetUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+.bottom-sheet-handle {
+  width: 44px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(43,43,43,0.4);
+  margin: 10px auto 4px;
+}

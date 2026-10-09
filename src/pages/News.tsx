@@ -4,6 +4,7 @@ import { sortedAlerts, resolveActionHref, type AlertItem } from "../data/site";
 import DoodleWindow from "../components/DoodleWindow";
 import Countdown from "../components/Countdown";
 import ShirtVote from "../components/ShirtVote";
+import ShowMoreList from "../components/ShowMoreList";
 
 const KEY = "njhs.alerts-dismissed.v1";
 
@@ -51,26 +52,26 @@ export default function News() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl px-4 pt-8 pb-10">
+    <div className="mx-auto max-w-4xl px-4 pt-6 md:pt-8 pb-10">
       <div className="flex items-end justify-between flex-wrap gap-3">
         <div>
-          <h1 className="font-display text-4xl sm:text-5xl text-ink">News & alerts</h1>
-          <p className="font-hand text-xl text-ink/80 mt-1">Most urgent at the top.</p>
+          <h1 className="font-display text-ink">News & alerts</h1>
+          <p className="font-hand text-ink/80 mt-1" style={{ fontSize: "clamp(16px, 4vw, 20px)" }}>
+            Most urgent at the top.
+          </p>
         </div>
         {mounted && dismissed.length > 0 && (
           <button type="button" onClick={resetAll} className="btn-doodle press">
-            Show hidden alerts
+            Show hidden
           </button>
         )}
       </div>
 
-      <section id="shirts" className="mt-6">
+      <section id="shirts" className="mt-5 md:mt-6">
         <DoodleWindow variant="cream" addressText="pinned/shirt-vote">
           <div className="flex items-start gap-2 flex-wrap">
-            <span className="font-hand text-xs uppercase tracking-wider bg-paper ink-line rounded-md px-2 py-0.5">
-              Pinned
-            </span>
-            <h2 className="font-display text-2xl text-ink">Vote on shirt colors!</h2>
+            <span className="font-hand text-xs uppercase tracking-wider bg-paper ink-line rounded-md px-2 py-0.5">Pinned</span>
+            <h2 className="font-display text-ink">Vote on shirt colors!</h2>
           </div>
           <p className="font-body text-ink/80 mt-1">
             Tap your favorite. We settle it at the meeting.
@@ -81,56 +82,54 @@ export default function News() {
         </DoodleWindow>
       </section>
 
-      <div className="mt-6 space-y-5">
+      <div className="mt-5 md:mt-6">
         {list.length === 0 && (
           <DoodleWindow variant="cream">
             <p className="font-hand text-ink/70">You're caught up. No alerts right now.</p>
           </DoodleWindow>
         )}
-        {list.map((a) => {
-          const meta = typeMeta[a.type];
-          return (
-            <DoodleWindow key={a.id} variant={meta.variant} addressText={`alerts/${a.id}`}>
-              <div className="flex items-start gap-3">
-                <div aria-hidden className="text-2xl leading-none mt-1">{meta.icon}</div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-hand text-xs uppercase tracking-wider bg-paper ink-line rounded-md px-2 py-0.5">
-                      {meta.label}
-                    </span>
-                    {a.urgent && (
-                      <span className="font-hand text-xs uppercase tracking-wider bg-coral ink-line rounded-md px-2 py-0.5 animate-wobble inline-block">
-                        Urgent
-                      </span>
-                    )}
-                    <span className="font-body text-xs text-ink/70 ml-auto">
-                      Posted {a.posted}
-                    </span>
-                  </div>
-                  <h2 className="font-display text-2xl text-ink mt-2 leading-tight">{a.title}</h2>
-                  <p className="font-body text-ink mt-1 leading-snug">{a.message}</p>
-                  {a.dueDate && (
-                    <div className="mt-2">
-                      <Countdown date={a.dueDate} label="Due in" />
-                    </div>
-                  )}
-                  <div className="mt-3 flex gap-2 flex-wrap">
-                    {a.actions && a.actions.map((act) => <ActionLink key={act.href} action={act} />)}
-                    <button
-                      type="button"
-                      onClick={() => dismiss(a.id)}
-                      className="btn-doodle press"
-                    >
-                      Got it
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </DoodleWindow>
-          );
-        })}
+        <ShowMoreList initial={3} moreLabel="Show more alerts" lessLabel="Show fewer">
+          {list.map((a) => <AlertCard key={a.id} a={a} onDismiss={dismiss} />)}
+        </ShowMoreList>
       </div>
     </div>
+  );
+}
+
+function AlertCard({ a, onDismiss }: { a: AlertItem; onDismiss: (id: string) => void }) {
+  const meta = typeMeta[a.type];
+  return (
+    <DoodleWindow variant={meta.variant} addressText={`alerts/${a.id}`}>
+      <div className="flex items-start gap-3">
+        <div aria-hidden className="text-xl md:text-2xl leading-none mt-0.5 md:mt-1">{meta.icon}</div>
+        <div className="flex-1 min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="font-hand text-xs uppercase tracking-wider bg-paper ink-line rounded-md px-2 py-0.5">
+              {meta.label}
+            </span>
+            {a.urgent && (
+              <span className="font-hand text-xs uppercase tracking-wider bg-coral ink-line rounded-md px-2 py-0.5 animate-wobble inline-block">
+                Urgent
+              </span>
+            )}
+            <span className="font-body text-xs text-ink/70 ml-auto">Posted {a.posted}</span>
+          </div>
+          <h2 className="font-display text-ink mt-1 md:mt-2 leading-tight" style={{ fontSize: "clamp(18px, 5vw, 24px)" }}>{a.title}</h2>
+          <p className="font-body text-ink mt-1 leading-snug text-sm md:text-base">{a.message}</p>
+          {a.dueDate && (
+            <div className="mt-2">
+              <Countdown date={a.dueDate} label="Due in" />
+            </div>
+          )}
+          <div className="mt-3 flex gap-2 flex-wrap">
+            {a.actions && a.actions.map((act) => <ActionLink key={act.href} action={act} />)}
+            <button type="button" onClick={() => onDismiss(a.id)} className="btn-doodle press">
+              Got it
+            </button>
+          </div>
+        </div>
+      </div>
+    </DoodleWindow>
   );
 }
 

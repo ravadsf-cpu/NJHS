@@ -28,6 +28,12 @@ export default function DraggableWindow({
   const ref = useRef<HTMLDivElement | null>(null);
 
   const onPointerDown = (e: React.PointerEvent) => {
+    // On touch screens, don't drag. Just wiggle and let the user keep scrolling.
+    if (e.pointerType === "touch") {
+      setWiggle(true);
+      setTimeout(() => setWiggle(false), 450);
+      return;
+    }
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
     start.current = { px: e.clientX, py: e.clientY, sx: pos.x, sy: pos.y };
     setDragging(true);

@@ -1,11 +1,12 @@
 node_modules
 dist
 .DS_Store
+.vite
+.claude
 *.log
 .env
 .env.local
 .vscode
 .idea
-tsconfig.app.tsbuildinfo
-tsconfig.node.tsbuildinfo
-*.tsbuildinfo
+*.local
+tsconfig*.tsbuildinfo

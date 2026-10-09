@@ -16,7 +16,23 @@ const links = [
 export default function Footer() {
   return (
     <footer className="mt-12 border-t-[2.5px] border-ink bg-cream">
-      <div className="mx-auto max-w-6xl px-4 py-6 grid gap-5 md:grid-cols-[1fr_auto]">
+      {/* MOBILE: ultra-short footer. The bottom tab bar handles nav. */}
+      <div className="md:hidden px-4 py-5 text-center">
+        <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-paper ink-line-thick mb-2 overflow-hidden">
+          <img src="/logo/njhs-emblem.png" alt="NJHS emblem" className="w-full h-full object-cover" />
+        </div>
+        <div className="font-hand text-ink">{site.footer.tagline}</div>
+        <div className="mt-1 font-body text-ink/80 text-sm">
+          Questions?{" "}
+          <Link to="/officer-info#contact" className="underline decoration-dotted underline-offset-2">
+            Email an officer
+          </Link>
+          .
+        </div>
+      </div>
+
+      {/* DESKTOP: full footer (unchanged). */}
+      <div className="hidden md:grid mx-auto max-w-6xl px-4 py-6 gap-5 md:grid-cols-[1fr_auto]">
         <div>
           <div className="font-hand text-ink text-lg">{site.footer.tagline}</div>
           <div className="mt-2 font-body text-ink/80 text-sm">
