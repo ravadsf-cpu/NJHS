@@ -161,7 +161,7 @@
   flex: 0 0 82%;
   min-width: 0;
 }
-.swipe-row.swipe-row-folder > * { flex: 0 0 58%; }
+.swipe-row.swipe-row-folder > * { flex: 0 0 calc(50% - 22px); }
 .swipe-row.swipe-row-chip > * { flex: 0 0 auto; scroll-snap-align: center; }
 @media (min-width: 768px) {
   /* On tablet+ the swipe rows become plain horizontal rows if needed; by

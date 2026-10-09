@@ -37,7 +37,7 @@ export default function PillTabs({ tabs, className }: { tabs: Tab[]; className?:
   return (
     <div
       className={clsx(
-        "md:hidden sticky top-[52px] z-30 -mx-4 px-4 py-2 bg-sky-doodle/95 backdrop-blur-sm border-b border-ink/20",
+        "md:hidden mt-3 py-2 border-b border-ink/20",
         className
       )}
     >

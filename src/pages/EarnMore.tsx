@@ -167,8 +167,8 @@ export default function EarnMore() {
         Tons of places around Houston take middle schoolers. Pick what you like, and we'll show you where to sign up.
       </p>
 
-      {/* MOBILE: sticky search + filter button */}
-      <div className="md:hidden sticky top-[52px] z-30 -mx-4 px-4 py-2 bg-sky-doodle/95 backdrop-blur-sm border-b border-ink/20 mt-4">
+      {/* MOBILE: inline search + filter button (stays in place) */}
+      <div className="md:hidden mt-4">
         <div className="flex items-center gap-2">
           <input
             type="search"
@@ -549,7 +549,7 @@ function CalendarAgenda({ results, shown, onShowMore }: { results: Opportunity[]
         const items = byMonth.get(key) || [];
         return (
           <div key={key}>
-            <div className="sticky top-[200px] md:static z-10 -mx-4 px-4 py-2 bg-sky-doodle/95 backdrop-blur-sm border-b border-ink/20 md:border-none md:py-0 md:px-0 md:bg-transparent md:backdrop-blur-none">
+            <div className="py-2 border-b border-ink/20 md:border-none md:py-0">
               <h4 className="font-display text-xl text-ink">{label}</h4>
             </div>
             <ul className="mt-3 space-y-3">

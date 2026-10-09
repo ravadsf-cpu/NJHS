@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { sortedAlerts } from "../data/site";
 import NavDropdown from "./NavDropdown";
@@ -31,25 +30,6 @@ function LogoMark({ size = "normal" }: { size?: "normal" | "small" }) {
 
 export default function Navbar() {
   const alertCount = sortedAlerts().filter((a) => a.urgent).length;
-
-  // Mobile top bar hide-on-scroll-down, show on scroll up.
-  const [mobileHidden, setMobileHidden] = useState(false);
-  const lastY = useRef(0);
-  useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY;
-      if (y < 20) {
-        setMobileHidden(false);
-      } else if (y > lastY.current + 6) {
-        setMobileHidden(true);
-      } else if (y < lastY.current - 6) {
-        setMobileHidden(false);
-      }
-      lastY.current = y;
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   return (
     <>
@@ -91,11 +71,10 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* MOBILE slim top bar: emblem + name only, hides on scroll down. */}
+      {/* MOBILE slim top bar: emblem + name only, always visible. */}
       <header
         className={clsx(
-          "md:hidden sticky top-0 z-40 bg-sky-doodle/90 backdrop-blur-sm border-b-[2px] border-ink transition-transform duration-200",
-          mobileHidden && "-translate-y-full"
+          "md:hidden sticky top-0 z-40 bg-sky-doodle/90 backdrop-blur-sm border-b-[2px] border-ink"
         )}
       >
         <div className="px-4 py-1.5 flex items-center gap-2">

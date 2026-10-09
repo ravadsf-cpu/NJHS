@@ -93,7 +93,7 @@ function Agenda({ items }: { items: (MeetingSlot & { status: Status })[] }) {
         const monthItems = byMonth.get(key) || [];
         return (
           <div key={key} className="mb-5">
-            <div className="sticky top-[52px] z-20 -mx-4 px-4 py-2 bg-sky-doodle/95 backdrop-blur-sm border-b border-ink/20">
+            <div className="py-2 border-b border-ink/20">
               <h3 className="font-display text-xl text-ink">{monthLabel}</h3>
             </div>
             <ul className="mt-3 space-y-2">
